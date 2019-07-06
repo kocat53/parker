@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>해보자 슬라이더</title>
+</head>
+<style>
+	* {
+		margin:0;
+		padding:0;
+	}
+	body {
+		background-color: #f8f8f8;
+	}
+	#wrap {
+		margin: 50px auto;
+	}
+
+	
+
+	/************** S임시 **************/
+	
+	.slide_item {
+		display: block;
+		height: 500px;
+		color: #fff;
+		text-align: center;
+		font-size: 45px;
+		text-shadow: 1px 1px #000;
+	}
+
+	.slider_thumb button.on {
+		background-color: black;
+		color: #fff;
+	}
+
+	.slider_thumb {
+		width: 700px;
+		background-color: aquamarine;
+		border: 1px solid #ccc;
+		margin: 20px ;
+	}
+	/************** E임시 **************/
+	.slider_top,
+	.slider_wrap {
+		width: 100%;
+		overflow: hidden;
+	}
+	.slider_inner {
+		overflow-x: hidden;
+	}
+
+	.slider_inner:after,
+	.thumb_inner:after {
+		display: block;
+		clear: both;
+		content: '';
+	}
+
+	.slide_item {
+		float: left;
+	}
+
+	.item_pager {
+		display: block;
+		float: left;
+		box-sizing: border-box;
+		border: 0;
+	}
+
+	.hide {
+		display: none;
+	}
+</style>
+<body>
+	<div id="wrap">
+		<div class="slider_top">
+			<div class="slider_inner">
+				<a href="#;" class="slide_item" style="background: red">1번</a>
+				<a href="#;" class="slide_item" style="background: blue">2번</a>
+				<a href="#;" class="slide_item" style="background: green">3번</a>
+				<a href="#;" class="slide_item" style="background: yellow">4번</a>
+				<a href="#;" class="slide_item" style="background: purple">5번</a>
+			</div>
+		</div>
+		<div class="slider_thumb">
+			<div class="thumb_inner">
+				<button class="on"><span>1번</span></button>
+				<button><span>2번</span></button>
+				<button><span>3번</span></button>
+				<button><span>4번</span></button>
+				<button><span>5번</span></button>
+			</div>
+		</div>
+		<div class="slider_arrow" style="margin-top:10px;">
+			<button class="btn_slider btn_prev"><span>이전</span></button>
+			<button class="btn_slider btn_next"><span>다음</span></button>
+		</div>
+	</div>
+</body>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+<script>
+	var _count = 0;
+
+	$(function(){
+		var $inner = $('.slider_inner'), // 슬라이드 내부
+			$item = $inner.children(),// 슬라이더 요소
+			$Length = $item.length, // 갯수 구하기
+			$sectionWith = $('.slider_top').innerWidth(); // 전체 넓이
+			
+			var $index = $item.index()
+			console.log($index);
+
+		// 슬라이더 아이템 넓이 지정
+		$item.css({ 
+			'width':$sectionWith, // 전체 넓이만큼 지정
+		});
+
+		var  $width = $item.innerWidth(),
+			$fullWidth = ($Length * $width); 
+		
+		$inner.wrap('<div class="slider_wrap"></div>').css({
+			'width':$fullWidth,
+		});
+
+		// 페이저 관련 변수
+		var $thumb = $('.thumb_inner'),
+			$thumbWidth = $thumb.innerWidth(),
+			$thumbChild = $thumb.children(),
+			$thumbLength = $thumbChild.length,
+			$pagerWidth = ($thumbWidth/$thumbLength)
+
+			// 페이저
+			$thumb.css({
+				'width': $thumbWidth
+			})
+
+			$thumbChild.addClass('item_pager');
+			if($thumbLength > 4) {
+				$thumbChild.css('width',($thumbWidth/4));
+			} else {
+				$thumbChild.css('width',$pagerWidth)
+			}
+
+		
+		// 페이저 버튼 처리
+		$('.item_pager').each(function(){
+			var $this = $(this),
+			$index = $this.index();
+			$this.attr('data-index',$index);
+
+			var $data = $this.data('index');
+			$this.click(function(){
+				$(this).addClass('on').siblings().removeClass('on');
+				$('.slide_item').eq($index).removeClass('hide').siblings().addClass('hide');
+
+				_count = $index;
+			});
+		});
+
+		// var test = $('.item_pager').clone();
+		// $thumb.append(test);
+		
+		// 버튼 처리
+		$('.btn_slider').click(function(){
+			$('.slide_item').removeClass('hide');
+
+			var $this = $(this);
+
+			if($this.hasClass('btn_next')){
+				_count = _count+1;
+				if(_count == $thumbLength){
+					_count = 0;
+				}
+				$inner.append($('.slide_item:first()').clone());
+				$('.slide_item:first()').remove();
+			} else {
+				_count = _count-1;
+				if(_count <= -1){
+					_count = $thumbLength-1;
+				}
+				$inner.prepend($('.slide_item:eq('+($item.length-1)+')').clone());
+				$('.slide_item:last()').remove();
+			}
+			$('.item_pager').eq(_count).addClass('on').siblings().removeClass('on');
+		})
+
+		$(window).resize(function(){
+			var $window = $(window).width();
+			$('.slide_item').css('width',$window);
+			$inner.css({
+			'width':$Length*$window,
+		});
+		});
+	});
+
+	
+</script>
+</html>
