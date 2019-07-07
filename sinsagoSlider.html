@@ -100,15 +100,15 @@
 		</div>
 		<div class="slider_thumb">
 			<div class="thumb_inner">
-				<button class="on"><span>1번</span></button>
-				<button><span>2번</span></button>
-				<button><span>3번</span></button>
-				<button><span>4번</span></button>
-				<button><span>5번</span></button>
-				<button><span>6번</span></button>
-				<button><span>7번</span></button>
-				<button><span>8번</span></button>
-				<button><span>9번</span></button>
+				<button class="on item_pager"><span>1번</span></button>
+				<button class="item_pager"><span>2번</span></button>
+				<button class="item_pager"><span>3번</span></button>
+				<button class="item_pager"><span>4번</span></button>
+				<button class="item_pager"><span>5번</span></button>
+				<button class="item_pager"><span>6번</span></button>
+				<button class="item_pager"><span>7번</span></button>
+				<button class="item_pager"><span>8번</span></button>
+				<button class="item_pager"><span>9번</span></button>
 			</div>
 		</div>
 		<div class="slider_arrow" style="margin-top:10px;">
@@ -120,20 +120,21 @@
 <script src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
 <script>
 	var _count = 0,
-	_slider,
-	_index,
-	_nowSlider;
+	_slider, //setinterval 용
+	_index, // 갯수 세기용
+	_nowSlider; // 현재 확인용
 
 	$(function(){
 		var $sliderInner = $('.slider_inner'), // 슬라이드 내부
+			$sectionWith = $('.slider_top').innerWidth(),// 전체 넓이
 			$item = $sliderInner.children(),// 슬라이더 아이템 지정
 			$Length = $item.length, // 갯수 구하기
-			$sectionWith = $('.slider_top').innerWidth(),// 전체 넓이
+			// 페이저(썸네일)
 			$thumb = $('.thumb_inner'),
-			$thumbWidth = $thumb.innerWidth(),
-			$thumbChild = $thumb.children(),
+			$thumbWidth = $thumb.innerWidth(), // 썸네일 warp 넓이
+			$thumbItem = $thumb.children(), //
 			$pagerWidth = ($thumbWidth/$Length)
-			
+
 		// 슬라이더 아이템 넓이 지정
 		$item.each(function(){
 			var $index = $(this).index();
@@ -142,82 +143,81 @@
 			}).attr('data-index',$index);
 		});
 
-		$thumbChild.addClass('item_pager');
-
+		// 위에서 각각 넓이를 지정한 후  그 값을 곱하여  감싸고 있는부모에게 제공
 		var  $width = $item.innerWidth(),
 		$fullWidth = ($Length * $width); 
 		
 		$sliderInner.wrap('<div class="slider_wrap"></div>').css({
 			'width':$fullWidth,
 		});
-
+		
+		// 썸네일 갯수에 따른 넓이 자동 지정, 4개 미만일경우 갯수/100%
 		if($Length > 4) {
-			$thumbChild.css('width',($thumbWidth/4));
+			$thumbItem.css('width',($thumbWidth/4));
 		} else {
-			$thumbChild.css('width',$pagerWidth)
+			$thumbItem.css('width',$pagerWidth)
 		}
 
-
-		$thumbChild.each(function(){
-			$(this).attr('data-index',$(this).index());
-		},function(){
-			alert(228);
+		// 각각에 
+		$thumbItem.each(function(){
+			$(this).attr('data-thumIndex',$(this).index());
 		});
 
 		if($Length > 4) {
 			var $pagerAdd = (4-$Length % 4)
 		}
 
+		// 자동 롤릴
 		function autoSlider(){
 			_slider = setInterval(function(){
-				_index = $('.slide_item').eq(0).data('index'); 
+				_index = $('.slide_item').eq(1).data('index'); 
 				// console.log(_index);
 				nextSlider();
 			},1000);
 		}
 
-
+		// 다음
 		function nextSlider(){
 			$sliderInner.append($('.slide_item:first()').clone());
 			$('.slide_item:first()').remove();
+			onChangePager();
 			console.log(`이미지 바뀐다 next 의 인덱스 ${_index}`);
-			onClassPager();
 		}
 
+		// 이전
 		function prevSlider(){
 			$sliderInner.prepend($('.slide_item:eq('+($item.length-1)+')').clone());
 			$('.slide_item:last()').remove();
+			onChangePager();
 			console.log(`이미지 바뀐다 prev 의 인덱스 ${_index}`);
-			onClassPager();
 		}
 
-		function onClassPager(){
+
+		function onChangePager(){
 			$('.item_pager').removeClass('on');
-			$('.item_pager[data-index='+_index+']').addClass('on');
+			$('.item_pager[data-thumIndex='+_index+']').addClass('on');
 			console.log(`클래스 추가다 의 인덱스 ${_index}`);
 		}
 		
 		autoSlider();
 
 		for(i =0; i <= $pagerAdd-1; i++){
-			var readyItem = $thumbChild.eq(i).clone().removeClass('on');
+			var readyItem = $thumbItem.eq(i).clone().removeClass('on');
 			$thumb.append(readyItem);
 		}
-
-
+		
 		// 페이저 버튼 처리
 		$thumb.on('click', '.item_pager', function(){
 			var $this = $(this),
-			$index = $this.data('index');
+			$index = $this.data('thumIndex');
 			$(this).addClass('on').siblings().removeClass('on');
 			$('.slide_item').eq($index).removeClass('hide').siblings().addClass('hide');
 			_nowSlider = $('.slide_item:not(.hide)').data('index');
 		});
 
-
 		// 버튼 처리
 		$('.btn_slider').click(function(){
-			_index = $('.slide_item').eq(1).data('index'); 
+			clearInterval(_slider);
 			$('.slide_item').removeClass('hide');
 			
 			var $this = $(this);
@@ -227,12 +227,10 @@
 			} else {
 				prevSlider();
 			}
+			_index = $('.slide_item').eq(1).data('index'); 
 			console.log(_index);
-			clearInterval(_slider);
-			// setTimeout(autoSlider(),1000);
+			onChangePager();
 		});
-
-		
 
 		$(window).resize(function(){
 			var $window = $(window).width();
@@ -242,7 +240,5 @@
 			});
 		});
 	});
-
-	
 </script>
 </html>
