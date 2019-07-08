@@ -141,12 +141,24 @@ $(function(){
 		startAuto = setTimeout(autoSlider,1000);
 	}
 
+
 	function sliderChange(){
 		$('.slide_item[data-index='+ _index+']').removeClass('hide').siblings().addClass('hide');
 		onChangePager();
 	}
-	console.log(`갯수 ${$Length} 붙는갯수 ${$pagerAdd}`);
-	$('.item_pager:lt('+$Length+'):gt('+($pagerAdd-1)+')').css('background','red');	
+	var addNum;
+	if($pagerAdd ==3 ) {
+		addNum = 0;
+	} else if ($pagerAdd == 2) {
+		addNum = 1;
+	} else if ($pagerAdd == 1) {
+		addNum = 2;
+	} else {
+		addNum = 3;
+	}
+	var lengthAddPager = ($Length + $pagerAdd)/$pagerAdd;
+	console.log($pagerAdd);
+	$('.item_pager:not(.clone_item):gt(' +addNum+ ')').css('background','red')
 
 	function changePagerGroup(){
 		if($Length > 4) { // 이미지가 4개 이상이라면
@@ -161,8 +173,9 @@ $(function(){
 			
 			// 첫번쨰 버튼에서 마이너스를 누를 경우!
 			if(_changeCount < 0) {
-				_prevContentGroup = $('.item_pager:lt('+$Length+'):gt('+($pagerAdd-1)+')');	
-				$('.item_pager:gt('+($Length-2)+')').remove();
+				_prevContentGroup = $('.item_pager:not(.clone_item):gt(' + addNum + ')');	
+				console.log(_prevContentGroup.text());
+				// $('.item_pager:gt('+($Length-2)+')').remove();
 				$thumb.prepend(_prevContentGroup.clone());
 				_changeCount = 3;
 			}
