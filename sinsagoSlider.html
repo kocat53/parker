@@ -29,6 +29,7 @@
 		text-align: center;
 		font-size: 45px;
 		text-shadow: 1px 1px #000;
+		opacity: 0.3;
 	}
 
 	.slider_thumb button.on {
@@ -94,8 +95,8 @@
 				<a href="#;" class="slide_item" style="background: purple">5번</a>
 				<a href="#;" class="slide_item" style="background: pink">6번</a>
 				<a href="#;" class="slide_item" style="background: aqua">7번</a>
-				<a href="#;" class="slide_item" style="background: bisque">8번</a>
-				<a href="#;" class="slide_item" style="background: bisque">9번</a>
+				<a href="#;" class="slide_item" style="background: orange">8번</a>
+				<a href="#;" class="slide_item" style="background: brown">9번</a>
 			</div>
 		</div>
 		<div class="slider_thumb">
@@ -119,10 +120,15 @@
 </body>
 <script src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
 <script>
+	// 컨젯 曰 : 짱똘 환영 및 가르침 대환영...ㅠㅠ!
 	var _count = 0,
 	_slider, //setinterval 용
-	_index, // 갯수 세기용
-	_nowSlider; // 현재 확인용
+	_index = 0, // 갯수 세기용
+	_nowSlider, // 현재 확인용
+	_prevContentGroup,
+	startAuto,
+	_restartCount = false,
+	_changeCount = 0;
 
 	$(function(){
 		var $sliderInner = $('.slider_inner'), // 슬라이드 내부
@@ -147,91 +153,107 @@
 		var  $width = $item.innerWidth(),
 		$fullWidth = ($Length * $width); 
 		
+		// 횩새몰라 한겹 감싸고 위드값 지정
 		$sliderInner.wrap('<div class="slider_wrap"></div>').css({
 			'width':$fullWidth,
 		});
 		
-		// 썸네일 갯수에 따른 넓이 자동 지정, 4개 미만일경우 갯수/100%
+		// 썸네일 갯수에 따른 넓이 자동 지정, 
+		//4개 미만일경우 갯수/100%
+		// 4개 이상일 경우는 무조건 4개 나눈 값!
 		if($Length > 4) {
 			$thumbItem.css('width',($thumbWidth/4));
 		} else {
 			$thumbItem.css('width',$pagerWidth)
 		}
 
-		// 각각에 
+		//  썸네일각각에  인덱스값 부여
 		$thumbItem.each(function(){
 			$(this).attr('data-thumIndex',$(this).index());
 		});
 
+		// 이미지의 등록 갯수가 4개보다 많다면;
 		if($Length > 4) {
+			// 뒤에 추가될 이미지의 갯수를 구함
 			var $pagerAdd = (4-$Length % 4)
 		}
 
-		// 자동 롤릴
+		// 위에서 붙을 값을 구하여 반복문 실행
+		for(i =0; i <= $pagerAdd-1; i++){
+			//붙을 아이템들 복사해서 on 클래스 제거하고
+			var readyItem = $thumbItem.eq(i).clone().removeClass('on');
+			// 추가함
+			$thumb.append(readyItem);
+		}
+
+		// 자동 롤링
 		function autoSlider(){
 			_slider = setInterval(function(){
-				_index = $('.slide_item').eq(1).data('index'); 
-				// console.log(_index);
-				nextSlider();
+				_changeCount++; // 카운트 시작
+				_index++;
+				if(_index >= $Length) {
+					_index = 0;
+				}
+				sliderChange();
+				changePagerGroup(); // 복사작업 시작
 			},1000);
 		}
 
-		// 다음
-		function nextSlider(){
-			$sliderInner.append($('.slide_item:first()').clone());
-			$('.slide_item:first()').remove();
-			onChangePager();
-			console.log(`이미지 바뀐다 next 의 인덱스 ${_index}`);
-		}
-
-		// 이전
-		function prevSlider(){
-			$sliderInner.prepend($('.slide_item:eq('+($item.length-1)+')').clone());
-			$('.slide_item:last()').remove();
-			onChangePager();
-			console.log(`이미지 바뀐다 prev 의 인덱스 ${_index}`);
-		}
-
-
-		function onChangePager(){
-			$('.item_pager').removeClass('on');
-			$('.item_pager[data-thumIndex='+_index+']').addClass('on');
-			console.log(`클래스 추가다 의 인덱스 ${_index}`);
-		}
-		
 		autoSlider();
 
-		for(i =0; i <= $pagerAdd-1; i++){
-			var readyItem = $thumbItem.eq(i).clone().removeClass('on');
-			$thumb.append(readyItem);
-		}
-		
 		// 페이저 버튼 처리
-		$thumb.on('click', '.item_pager', function(){
+		$('.item_pager').on('mouseenter', function(){
+			_changeCount++;
+			_changeCount = $(this).index();
 			var $this = $(this),
-			$index = $this.data('thumIndex');
+				$index = $this.data('thumindex');
+			
 			$(this).addClass('on').siblings().removeClass('on');
-			$('.slide_item').eq($index).removeClass('hide').siblings().addClass('hide');
-			_nowSlider = $('.slide_item:not(.hide)').data('index');
+			$('.slide_item[data-index='+ $index+']').removeClass('hide').siblings().addClass('hide');
+			_index = $index;
 		});
 
+		$thumb.hover(function(){
+			clearInterval(_slider);
+			window.clearTimeout(startAuto);
+		},function(){
+			startSlider();
+		});
+		
 		// 버튼 처리
 		$('.btn_slider').click(function(){
 			clearInterval(_slider);
-			$('.slide_item').removeClass('hide');
+			window.clearTimeout(startAuto);
 			
 			var $this = $(this);
-			
+			$('.slide_item').removeClass('hide');
+
 			if($this.hasClass('btn_next')){
-				nextSlider();
+				_changeCount++;
+				_index++;
+				if(_index > $Length-1){
+					_index = 0;
+				}
+				sliderChange();
 			} else {
-				prevSlider();
+				_changeCount--;
+				_index--;
+				if(_index < 0){
+					_index = $Length-1;
+				}
+				sliderChange();
 			}
-			_index = $('.slide_item').eq(1).data('index'); 
-			console.log(_index);
-			onChangePager();
+			changePagerGroup();
+			startSlider();
 		});
 
+		// 마우스 올릴시 이벤트 멈춤 처리
+		$('.slider_top').hover(function(){
+			clearInterval(_slider);
+			window.clearTimeout(startAuto);
+		},startSlider);
+
+		// 넓이 처리
 		$(window).resize(function(){
 			var $window = $(window).width();
 			$('.slide_item').css('width',$window);
@@ -239,6 +261,42 @@
 				'width':$Length*$window,
 			});
 		});
+
+		function startSlider(){
+			startAuto = setTimeout(autoSlider,1000);
+		}
+
+		function sliderChange(){
+			$('.slide_item[data-index='+ _index+']').removeClass('hide').siblings().addClass('hide');
+			onChangePager();
+		}
+
+		function changePagerGroup(){
+			if($Length > 4) { // 이미지가 4개 이상이라면
+				
+				if (_changeCount >= 4) { // 보여지는 갯수만큼 된다면
+					_changeCount = 0; // 카은트 초기화
+					var rollingPager = $('.item_pager:gt('+($pagerAdd-1)+'):lt(4)'); // 앞에서부터   3개 숫자의  벓  다음에 오는 숫자4개를
+					var rollingClone = rollingPager.clone(); // 복사해서
+					$thumb.append(rollingClone); // 넣고
+					$('.item_pager:lt(4)').remove(); // 지우고
+				}
+				
+				// 첫번쨰 버튼에서 마이너스를 누를 경우!
+				if(_changeCount < 0) {
+					_prevContentGroup = $('.item_pager:lt('+$Length+'):gt('+($pagerAdd+1)+')');	
+					$('.item_pager:gt('+($Length-2)+')').remove();
+					$thumb.prepend(_prevContentGroup.clone());
+					_changeCount = 3;
+				}
+			}
+		}
+
+		// 페이저 변경인데
+		function onChangePager(){
+			$('.item_pager').removeClass('on');
+			$('.item_pager[data-thumIndex='+_index+']').addClass('on');
+		}
 	});
 </script>
 </html>
