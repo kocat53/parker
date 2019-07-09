@@ -14,7 +14,8 @@ $(function(){
 		$thumb = $('.thumb_inner'),
 		$thumbWidth = $thumb.innerWidth(), // 썸네일 warp 넓이
 		$thumbItem = $thumb.children(), //
-		$pagerWidth = ($thumbWidth/$Length)
+		$pagerWidth = ($thumbWidth / $Length),
+		_timer = 2000;
 
 	// 슬라이더 아이템 넓이 지정
 	$item.each(function(){
@@ -71,7 +72,7 @@ $(function(){
 			}
 			sliderChange();
 			changePagerGroup(); // 복사작업 시작
-		},1000);
+		},_timer);
 	}
 
 	//autoSlider();
@@ -82,13 +83,13 @@ $(function(){
 		_changeCount = $(this).index();
 		var $this = $(this),
 			$index = $this.data('thumindex');
-		console.log($index);
 		
 		$this.addClass('on').siblings().removeClass('on');
 		$('.slide_item[data-index='+ $index+']').removeClass('hide').siblings().addClass('hide');
 		_index = $index;
 	});
 
+	// 오버시 애니메이션 멈춤
 	$thumb.hover(function(){
 		clearInterval(_slider);
 		window.clearTimeout(startAuto);
@@ -120,7 +121,7 @@ $(function(){
 			sliderChange();
 		}
 		changePagerGroup();
-		// startSlider();
+		startSlider();
 	});
 
 	// 마우스 올릴시 이벤트 멈춤 처리
@@ -138,22 +139,22 @@ $(function(){
 		});
 	});
 
+	// 멈춘뒤 다시 재생용 함수..
 	function startSlider(){
-		startAuto = setTimeout(autoSlider,1000);
+		startAuto = setTimeout(autoSlider);
 	}
 
-
+	// 슬라이드 이미지 바뀌는거
 	function sliderChange(){
 		$('.slide_item[data-index='+ _index+']').removeClass('hide').siblings().addClass('hide');
 		onChangePager();
 	}
 
+	var originalItem = $('.item_pager:nth-last-child(-n+' + $pagerAdd + ')').length; // 오리지날 갯수
+	var allLength = $Length -originalItem;
+	var masterLength = (allLength - (4 - ($pagerAdd - 1))); // 오리지날 갯수 빼기 (원래 보여질값에 인덱스 0 부터 시작하니까 1로 만들기위해 1 더한 값)
 	
-	var originalItem = $('.item_pager:not(.clone_item)').length;
-	var masterLength = (originalItem - (4+1));
-	$('.item_pager:not(.clone_item):gt(' + masterLength + ')').css('background', 'red');
-	console.log(`오리지날에서 보여질 갯수에 인덱스-1 한 값${masterLength}`);
-
+	// 페이저 무한루프다리!!
 	function changePagerGroup(){
 		if($Length > 4) { // 이미지가 4개 이상이라면
 			
@@ -166,17 +167,21 @@ $(function(){
 			}
 			
 			// 첫번쨰 버튼에서 마이너스를 누를 경우!
-			if(_changeCount < 0) {
-				_prevContentGroup = $('.item_pager:not(.clone_item):gt(' + masterLength + ')');	
-				console.log(_prevContentGroup.text());
-				$('.item_pager:gt(' + (masterLength+2) + ')').remove();
-				$thumb.prepend(_prevContentGroup.clone());
+			if (_changeCount < 0) {
+				// 여기가 진짜 힘들었다.... 이전 처리 하는게....
+				_prevContentGroup = $('.item_pager:not(:nth-last-child(-n+' + $pagerAdd + ')):gt(' + masterLength + ')');	
+				var appendClone = _prevContentGroup.clone(),
+					lastAddclone = appendClone.slice(0, $pagerAdd);
+				
+				$thumb.prepend(_prevContentGroup);
+				$('.item_pager:nth-last-child(-n+' + $pagerAdd + ')').remove();
+				$thumb.append(lastAddclone)
 				_changeCount = 3;
 			}
 		}
 	}
 
-	// 페이저 변경인데
+	// 페이저 변경인데 'ㅅ'..
 	function onChangePager(){
 		$('.item_pager').removeClass('on');
 		$('.item_pager[data-thumIndex='+_index+']').addClass('on');
