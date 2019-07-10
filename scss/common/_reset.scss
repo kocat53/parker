@@ -1,0 +1,60 @@
+@charset 'utf-8';
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,500,700&display=swap&subset=korean');
+html,body,div,span,p,a,ul,li,ol,ul,strong,em,i,b,button,select,input,img,
+article,aside,audio,bdi,canvas,datalist,details,dialog,embed,figcaption,figure,footer,header,keygen,main,mark,menuitem,meter,nav,output,progress,rp,rt,ruby,section,source,summary,svg,time,track,video,wbr, {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	line-height: 1.25;
+	color: #454545;
+	font-family: 'Noto Sans KR', sans-serif;
+}
+
+.blind {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0,0,0,0);
+}
+
+a {
+	text-decoration: none;
+}
+
+img {
+	max-width: 100%;
+	vertical-align: top;
+}
+
+// 익스 딸깍 방지
+button > span {
+	position: relative;
+}
+
+table {
+	width: 100%;
+	border-collapse: 0;
+	table-layout: fixed;
+}
+
+// 바로가기 메뉴
+#skip {
+	a {
+		position: absolute;
+		top: -50px;
+		right: 0;
+		left: 0;
+		background-color: #005c83;
+		color: #fff;
+		font-size: 21px;
+		height: 50px;
+		line-height: 50px;
+		text-align: center;
+
+		&:focus {
+			top: 0;
+		}
+	}
+}
