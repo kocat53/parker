@@ -3,11 +3,7 @@ const gulp = require('gulp'),
 	browsersync = require('browser-sync').create(),
 	autoprefixer = require('gulp-autoprefixer'),
 	iconfont = require('gulp-iconfont'),
-	iconfontCss = require('gulp-iconfont-css'),
-	consolidate = require('gulp-consolidate'),
-	async = require('async');
-
-const runTimestamp = Math.round(Date.now()/1000);
+	iconfontCss = require('gulp-iconfont-css');
 
 const path = {
 	scss: './scss/**/*.scss',
@@ -60,23 +56,23 @@ function iconFont(done) {
 		.pipe(iconfontCss({
 			fontName: 'iconFont',
 			path: 'scss/lib/_icons.scss',
-			targetPath: '_icons.scss',
-			fontPath: '../fonts/common/'
+			targetPath: '_iconfont.scss',
+			fontPath: '../fonts/'
 		}))
 		.pipe(iconfont({
 			fontName: 'iconFont',
-			fontPath: './fonts/',
+			formats:['ttf', 'eot', 'woff', 'woff2'],
+			fontPath: '../fonts/',
 			className: 'icons'
 		}))
-		.pipe(gulp.dest('scss/common'));
-	
-	gulp.src('scss/*.{eot,ttf,woff}')
-		.pipe(gulp.dest('fonts'));
 	done();
+	// 일단.. 임시로 fonts에 scss도 넣어 놓자... =ㅠ=... 어떻게 움직이는거냐아...
 }
+
+const icon = gulp.series(iconFont,scss)
 
 const watch = gulp.parallel(watchFiles, broserLive);
 
-exports.font = iconFont;
+exports.font = icon;
 exports.sass = scss;
 exports.bs = watch;

@@ -1,11 +1,11 @@
 @font-face {
 	font-family: "iconFont";
-	src: url('../fonts/common/iconFont.eot');
-	src: url('../fonts/common/iconFont.eot?#iefix') format('eot'),
-		url('../fonts/common/iconFont.woff2') format('woff2'),
-		url('../fonts/common/iconFont.woff') format('woff'),
-		url('../fonts/common/iconFont.ttf') format('truetype'),
-		url('../fonts/common/iconFont.svg#iconFont') format('svg');
+	src: url('../fonts/iconFont.eot');
+	src: url('../fonts/iconFont.eot?#iefix') format('eot'),
+		url('../fonts/iconFont.woff2') format('woff2'),
+		url('../fonts/iconFont.woff') format('woff'),
+		url('../fonts/iconFont.ttf') format('truetype'),
+		url('../fonts/iconFont.svg#iconFont') format('svg');
 }
 
 @mixin icon-styles {
@@ -33,6 +33,9 @@
 	@if $filename == all2 {
 		$char: "\E002";
 	}
+	@if $filename == beauty2 {
+		$char: "\E003";
+	}
 
 	@return $char;
 }
@@ -53,4 +56,7 @@
 }
 .icon-all2 {
 	@include icon(all2);
+}
+.icon-beauty2 {
+	@include icon(beauty2);
 }
