@@ -3,7 +3,8 @@ const gulp = require('gulp'),
 	browsersync = require('browser-sync').create(),
 	autoprefixer = require('gulp-autoprefixer'),
 	iconfont = require('gulp-iconfont'),
-	iconfontCss = require('gulp-iconfont-css');
+	iconfontCss = require('gulp-iconfont-css'),
+	rmLines = require('gulp-rm-lines');
 
 const path = {
 	scss: './scss/**/*.scss',
@@ -26,14 +27,20 @@ function browserSyncReload(done) {
 }
 
 function scss(done) {
-	gulp.src(path.scss , {sourcemaps: true})
+	gulp.src(path.scss, { sourcemaps: true })
 		.pipe(sass({
-			outputStyle: 'expanded', // nested, expanded, compact, compressed
+			outputStyle: 'compact', // nested, expanded, compact, compressed
 			indentType: 'tab',
-			indentWidth : 1,
+			indentWidth: 1,
+			linefeed: 'cr',
 		}).on('error', sass.logError))
 		.pipe(autoprefixer({
 			cascade: false
+		}))
+		.pipe(rmLines({
+			'filters': [
+				/<link\s+rel=["']/i
+			],
 		}))
 		.pipe(gulp.dest('./css',{ sourcemaps: true }));
 	done();
