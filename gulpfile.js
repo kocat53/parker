@@ -3,8 +3,9 @@ const gulp = require('gulp'),
 	browsersync = require('browser-sync').create(),
 	autoprefixer = require('gulp-autoprefixer'),
 	iconfont = require('gulp-iconfont'),
-	iconfontCss = require('gulp-iconfont-css'),
 	rmLines = require('gulp-rm-lines');
+	consolidate = require('gulp-consolidate'),
+	iconfontCss = require('gulp-iconfont-css');
 
 const path = {
 	scss: './scss/**/*.scss',
@@ -58,28 +59,51 @@ function watchFiles() {
 	)
 }
 
-function iconFont(done) {
+// 종상 ver
+function svgiconfont(done) {
 	gulp.src(['fonts/svg/**/*.svg'])
-		.pipe(iconfontCss({
-			fontName: 'iconFont',
-			path: 'scss/lib/_icons.scss',
-			targetPath: '_iconfont.scss',
-			fontPath: '../fonts/'
-		}))
 		.pipe(iconfont({
 			fontName: 'iconFont',
-			formats:['ttf', 'eot', 'woff', 'woff2'],
+			prependUnicode: true,
+			formats:['woff', 'woff2'],
 			fontPath: '../fonts/',
 			className: 'icons'
 		}))
+		.on('glyphs', function(glyphs, options) {
+			// CSS templating, e.g.
+			console.log(glyphs, options);
+		})
 	done();
 	// 일단.. 임시로 fonts에 scss도 넣어 놓자... =ㅠ=... 어떻게 움직이는거냐아...
 }
 
-const icon = gulp.series(iconFont,scss)
+// function font(done) {
+// 	gulp.src('fonts/svg/*.svg')
+// 		.pipe(iconfont({
+// 			fontName: 'iconfont',
+// 			formats: [ 'woff', 'woff2'],
+// 		}))
+// 		.on('glyphs', function (glyphs, options) {
+// 			console.log(glyphs, options);
+// 			gulp.src('iconfont-src/iconfont.css')
+// 				.pipe(consolidate('underscore', {
+// 					glyphs: glyphs,
+// 					fontName: options.fontName,
+// 					fontDate: new Date().getTime()
+// 				}))
+// 				.pipe(gulp.dest('iconfont'));
+// 			gulp.src('iconfont-src/index.html')
+// 				.pipe(consolidate('underscore', {
+// 					glyphs: glyphs,
+// 					fontName: options.fontName
+// 				}))
+// 				.pipe(gulp.dest('iconfont'));
+// 		})
+// 		.pipe(gulp.dest('iconfont'));
+// 	done();
+// }
 
 const watch = gulp.parallel(watchFiles, broserLive);
-
-exports.font = icon;
+exports.font = svgiconfont;
 exports.sass = scss;
 exports.bs = watch;

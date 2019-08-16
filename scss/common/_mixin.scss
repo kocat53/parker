@@ -1,12 +1,20 @@
-/*
- * a small mixin for easy use of rem with px as fallback
- * usage: @include x-rem(font-size, 14px)
- * usage: @include x-rem(margin, 0 12px 2 1.2)
- * usage: @include x-rem(padding, 1.5 24px)
- *
- * thanks to Eric Meyer for https://github.com/ericam/susy
- * and Hans Christian Reinl for http://drublic.de/blog/rem-fallback-sass-less/
- */
+
+
+@mixin media($size) {
+	@if $size == tablet {
+		@media all and (min-width:768px) and (max-width:1024px) { @content; }
+	} @else if $size == mobile {
+		@media (max-width: 767px) { @content; }
+	} @else if $size == small {
+		@media (min-width: 319px) { @content; }
+	} @else if $size == pc {
+		@media (min-width: 1200px) { @content; }
+	} @else if $size == big-desktop-up {
+		@media (min-width: 1800px) { @content; }
+	}
+}
+
+// REM 처리
 @mixin rem($property, $values) {
 	// Create a couple of empty lists as output buffers.
 	$base-font-size: 16px; // should be consistent with your html/body font-size
@@ -34,6 +42,6 @@
 		}
 	}
 	// output the converted rules
-	// #{$property}: $px-values; // 이것은 px로 변환
+	#{$property}: $px-values; // 이것은 px로 변환
 	#{$property}: $rem-values;
 }

@@ -25,11 +25,15 @@
     "gulp-iconfont": "^10.0.3",
     "gulp-iconfont-css": "^3.0.0",
     "gulp-rm-lines": "0.0.10",
+    "gulp-rename": "^1.4.0",
     "gulp-sass": "^4.0.2"
   },
   "browserslist": [
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "dependencies": {
+    "underscore": "^1.9.1"
+  }
 }
