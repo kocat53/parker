@@ -1,0 +1,72 @@
+@charset 'utf-8';
+
+$topsize : 4rem;
+$maxWidth :60vw;
+
+html,body,#wrap {
+	height: 100%;
+}
+
+pre {
+	tab-size: 4 !important;
+}
+
+#wrap {
+	background-color: #f6f6f6;
+}
+
+#content {
+	background-color: #FFC44F;
+	&:before {
+		position: absolute;
+		top: $topsize;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		max-width: $maxWidth;
+		margin: 0 auto;
+		background-color: #ececec;
+		content: '';
+	}
+}
+
+.list_content {
+	display: flex;
+	position: relative;
+	max-width: $maxWidth;
+	margin:  0 auto;
+
+	
+
+	> li {
+		flex: 1 0 auto;
+
+		+ li {
+			border-left: 1px solid rgba(0,0,0,0.2);
+		}
+
+		&.on {
+			.btn_tab {
+				background-color: #dda53e;
+			}
+		}
+
+		> section {
+			position: absolute;
+			top: $topsize;
+			left: 0;
+			right: 0;
+			max-width: $maxWidth;
+		}
+	}
+
+	.btn_tab {
+		display: block;
+		width: 100%;
+		height: $topsize;
+		background-color: #f4b53f;
+		color: #fff;
+		font-size: 1.65rem;
+		text-align: center;
+	}
+}

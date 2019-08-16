@@ -36,14 +36,15 @@ function scss(done) {
 			linefeed: 'cr',
 		}).on('error', sass.logError))
 		.pipe(autoprefixer({
-			cascade: false
+			cascade: false,
+			grid: true,
 		}))
 		.pipe(rmLines({
 			'filters': [
 				/<link\s+rel=["']/i
 			],
 		}))
-		.pipe(gulp.dest('./css',{ sourcemaps: true }));
+		.pipe(gulp.dest('./css',{ sourcemaps: './' }));
 	done();
 }
 
