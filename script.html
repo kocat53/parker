@@ -8,17 +8,23 @@
 	<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,400,500,700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="css/common.css">
 	<link rel="stylesheet" href="css/script.css">
-	<link rel="stylesheet" href="https//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/styles/default.min.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/styles/monokai-sublime.min.css">
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/highlight.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/languages/xml.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/styles/shCore.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/styles/shThemeDefault.min.css">
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shCore.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shBrushCss.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shBrushJScript.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shBrushXml.min.js"></script>
+	<script type="text/javascript">
+		/* 5. set config : option */
+		// option 지정
+		/* 6. set defaults : option */
+		// option 지정
+		/* 7. 초기화 : 필수 */
+		SyntaxHighlighter.defaults['gutter'] = true;
+		//SyntaxHighlighter.defaults['collapse'] = true;
+		SyntaxHighlighter.all();
+	</script>
 	<script>
-		hljs.configure({
-			useBR: false,
-			// tabReplace:'',
-		});
-		hljs.initHighlightingOnLoad();
 	</script>
 </head>
 <body>
@@ -34,17 +40,15 @@
 					<section>
 						<div class="inner">
 							<article>
-							<pre>
-								<code class="html">
-									&lt;div class="sample_wrap"&gt;
-										&lt;div class="sample_box"&gt;1&lt;/div&gt;
-										&lt;div class="sample_box"&gt;2&lt;/div&gt;
-										&lt;div class="sample_box"&gt;3&lt;/div&gt;
-										&lt;div class="sample_box"&gt;4&lt;/div&gt;
-										&lt;div class="sample_box"&gt;5&lt;/div&gt;
-									&lt;/div&gt;
-								</code>
-							</pre>
+								<pre class="brush: html">
+									<div class="sample_wrap">
+										<div class="sample_box">1</div>
+										<div class="sample_box">2</div>
+										<div class="sample_box">3</div>
+										<div class="sample_box">4</div>
+										<div class="sample_box">5</div>
+									</div>
+								</pre>
 								<div class="sample_wrap">
 									<div class="sample_box">1</div>
 									<div class="sample_box">2</div>
@@ -59,7 +63,7 @@
 				<!-- 스크립트 -->
 				<li>
 					<button class="btn_tab">
-						<span>Jq -&gt; Javascript</span>
+						<span>Jq -> Javascript</span>
 					</button>
 				</li>
 			</ul>

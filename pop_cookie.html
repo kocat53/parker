@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>오늘하루 열지 않음</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		.dimmed {
+			position: fixed;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			background-color: rgba(0,0,0,0.5);
+		}
+
+		.layer_wrap {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			padding: 10px;
+			transform: translate(-50%, -50%);
+			background-color: #fff;
+		}
+
+		button {
+			margin-left: 3vw;
+		}
+	</style>
+</head>
+<body>
+	<div class="dimmed"></div>
+	<div class="layer_wrap">
+		<div class="layer_bottom">
+			<label for="no_today">
+				<input type="checkbox" name="" id="no_today">
+				<span>오늘하루 안염</span>
+			</label>
+			<button>닫기</button>
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+	<script>
+		$(document).ready(function () {
+			$("button").click(function () {
+				if($('#no_today').is(":checked")) {
+					setCookieMobile( "todayCookie", "done" , 1);
+					$(".layer_wrap").hide();
+				} 
+			});
+		});
+		
+		function setCookieMobile ( name, value, expiredays ) {
+			var todayDate = new Date();
+			todayDate.setDate( todayDate.getDate() + expiredays );
+			document.cookie = name + "=" + escape( value ) + "; path=/; expires=" + todayDate.toGMTString() + ";"
+		}
+		
+		function getCookieMobile () {
+			var cookiedata = document.cookie;
+			console.log(cookiedata);
+			if ( cookiedata.indexOf("todayCookier=done") < 0 ){
+				$(".layer_wrap").show();
+			}
+			else {
+				$(".layer_wrap").hide();
+			}
+		}
+		getCookieMobile();
+	</script>
+</body>
+</html>
