@@ -5,14 +5,17 @@ const gulp = require('gulp'),
 	iconfont = require('gulp-iconfont'),
 	rmLines = require('gulp-rm-lines');
 	consolidate = require('gulp-consolidate'),
+	pug = require('gulp-pug'),
 	iconfontCss = require('gulp-iconfont-css');
 
+// 기본경로 설정
 const path = {
 	scss: './scss/**/*.scss',
 	html: './*.html',
 	css: 'css/*.css'
 }
 
+// 라이브 서버 설정
 function broserLive(done) {
 	browsersync.init({
 		server: {
@@ -104,7 +107,18 @@ function svgiconfont(done) {
 // 	done();
 // }
 
+function gulpPug(done) {
+	gulp.src('pug/src/*.pug')
+		.pipe(pug({
+			filename: '_*.pug',
+			pretty: true
+		}))
+		.pipe(gulp.dest('pug/dist'))
+	done();
+}
+
 const watch = gulp.parallel(watchFiles, broserLive);
+exports.html = gulpPug;
 exports.font = svgiconfont;
 exports.sass = scss;
 exports.bs = watch;
