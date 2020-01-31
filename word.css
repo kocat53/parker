@@ -1,0 +1,48 @@
+* {
+	margin: 0;
+	padding: 0;
+	font-family: '나눔고딕' , sans-serif;
+	font-size: 2.7vw;
+	color: #333;
+}
+
+html,body,#wrap {
+	height: 100%;
+}
+
+body { background-color:cornsilk}
+
+#wrap {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	position: relative;
+	box-sizing: border-box;
+}
+
+.title_area {
+	width: 100%;
+	flex: 0 0 auto;
+	padding: 1.5vw 0;
+	text-align: center;
+}
+
+#item_area {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex: 1 1 auto;
+	text-align: center;
+}
+
+.form_write {
+	flex: 0 0 auto;
+	padding: 1vw 0 3vw;
+}
+
+input {
+	padding: 1vw 1.5vw ;
+	border-radius: .5vw;
+	font-size: 2vw;
+	border: 1px solid #ccc;
+}

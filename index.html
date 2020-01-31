@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="ko">
 <head>
 	<meta charset="UTF-8">
@@ -6,9 +6,9 @@
 	<meta http-equiv="Subject" content="공부겸 포트폴리오 사이트" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="Keywords" content="퍼블리셔, 퍼블리셔 포트폴리오, 웹 퍼블 포폴, 퍼블 포폴" />
-	<meta name="Description" content="퍼블리셔, 퍼블리셔 포트폴리오, 웹 퍼블 포폴, 퍼블 포폴" />
+	<meta name="Description" content="퍼블리셔, 퍼블리셔 포트폴리오, 웹 퍼블 포폴, 퍼블 포폴" /> -->
 	<!-- CSS -->
-	<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,400,500,700&display=swap" rel="stylesheet">
+	<!-- <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,400,500,700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="css/common.css">
 	<title>PJS :: Parker</title>
 </head>
@@ -28,4 +28,240 @@
 	</div>
 </body>
 <script src="js/common.js"></script>
+</html> -->
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<meta charset="utf-8">
+		<title>금값</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+		<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,700&display=swap" rel="stylesheet">
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			input[type='text'],input[type='number']{-webkit-appearance:none ;appearance:none}
+			input[type=number]::-webkit-inner-spin-button, 
+			input[type=number]::-webkit-outer-spin-button {-webkit-appearance:none ;margin:0;}
+			input[type=text]::-ms-clear,input[type=password]::-ms-clear,input[type=number]::-ms-clear{display:none}
+			body {
+				font-family: 'Noto Sans KR', sans-serif !important;
+				font-size: 5vw;
+				line-height: 1.2;
+				color: #222;
+				display: flex;
+				flex-direction: column;
+			}
+
+			header {
+				text-align: center;
+				background-color: rgb(241, 219, 16);
+				padding: 4vw 0;
+				color: #fff;
+				font-size: 6vw;
+				text-shadow: 1px 1px 15px #000;
+			}
+
+			main {
+				padding: 5vw 3vw;
+				display: flex;
+				flex-direction: column;
+			}
+
+			section {
+				display: flex;
+				flex-direction: column;
+			}
+
+			label {
+				font-size: 4vw;
+			}
+
+			label > em {
+				display: inline-block;
+				margin-bottom: 1vw;
+				margin-left: 1.5vw;
+				font-size: 3.3vw;
+				color: #aaa;
+				vertical-align: middle;
+			}
+			section + section {
+				margin-top:6vw;
+			}
+			
+			section > div {
+				display: flex;
+				align-items: center;
+				margin-top: 2vw;
+			}
+
+			section  input {
+				flex: 1 1 auto;
+				margin-right: 2vw;
+				border: 1px solid #eee;
+				padding: 2vw 2vw;
+				font-size: 4.5vw;
+				box-sizing: border-box;
+			}
+
+			section > div > span {
+				flex: 0 1 auto;
+			}
+
+			button {
+				border: 0;
+			}
+
+			.btn {
+				border-radius: 2vw;
+				padding: 3vw 0;
+			}
+
+			em,i {
+				font-style: normal;
+			}
+
+			button.submit {
+				background-color: rgb(31, 108, 224);
+				font-size: 6vw;
+				color: #fff;
+			}
+
+			.btn_calc {
+				width: 100%;
+				margin-top: 3vw;
+				border: 1px solid #ddd;
+				font-size: 4vw;
+				padding: 2vw;
+			}
+
+			footer {
+				padding: 3vw ;
+				margin-top: auto;
+			}
+
+			footer > strong {
+				display: block;
+				font-size: 5vw;
+				margin-bottom: 1vw;
+			}
+
+			footer li {
+				font-size: 4vw;
+				letter-spacing: 0;
+			}
+
+			.column {
+				flex-direction: column;
+				align-items: flex-start;
+			}
+
+			.calcPrice {
+				color: #2915d6;
+				font-weight: 600;
+			}
+
+			ul,li {
+				list-style: none;
+			}
+		</style> 
+	</head>
+	<body>
+		<header>금값시세확인</header>
+		<main>
+			<section>
+				<label for="goldCalc">1g당 가격 계산<em>24k 1돈 기준</em></label>
+				<div class="column">
+					<div>
+						<input type="text" id="goldCalc" class="price" style='width:30%' placeholder="금액 입력">
+						x 0.6435 / 3.75 = <em class="calcPrice"> 0</em>
+					</div>
+					<button class="btn btn_calc">계산</button>
+				</div>
+			</section>
+			<section>
+				<label for="price" >판매가격</label>
+				<div>
+					<input type="text" class="price" id="price" placeholder="판매가 입력">
+					<span>원</span>
+				</div>
+			</section>
+			<section>
+				<label for="goldPrice" >금 1g당 가격</label>
+				<div>
+					<input type="text" class="price" id="goldPrice" placeholder="시세가 입력">
+					<span>원</span>
+				</div>
+			</section>
+			<section>
+					<label for="gram" >금 중량</label>
+				<div>
+					<input type="text" id="gram" placeholder="중량">
+					<span>g</span>
+				</div>
+			</section>
+			<section>
+				<button class="btn submit" type="button">계산</button>
+			</section>
+		</main>
+		<footer>
+			<strong>참고사항</strong>
+			<ul>
+				<li>- 세공비(마진)의 적정선은 9~13만</li>
+				<li>- 실 중량 체크 / 미 확인시 그 가게는 패싱</li>
+				<li>- 계약서 작성시 실중량 표기 필수</li>
+			</ul>
+		</footer>
+		<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+		<script>
+			$(function(){
+				function inputNumberFormat(obj) {
+					obj.value = comma(uncomma(obj.value));
+				}
+
+				function comma(str) {
+					str = String(str);
+					return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+				}
+
+				function uncomma(str) {
+					str = String(str);
+					return str.replace(/[^\d]+/g, '');
+				}
+
+				$("input.price").bind('keyup keydown',function(){
+					inputNumberFormat(this);
+				});
+
+				$('button.submit').click(function(){
+					var myStorage = window.localStorage;
+					var Price = uncomma($('#price').val()),
+						goldPrice =  uncomma($('#goldPrice').val()),
+						gram =  $('#gram').val(),
+						result = Math.floor(Number(Price - (goldPrice*gram))),
+						printResult = String(result).replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+
+						myStorage.setItem('myCat',goldPrice);
+
+						alert('세공비 : '+printResult+'원 입니다.');
+				});
+
+				$('.btn_calc').click(function(){
+					var basePrice = uncomma($('#goldCalc').val()),
+						clacPrice = Math.floor((basePrice*0.6435)/3.75)
+						baseResult = String(clacPrice).replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+
+					$('.calcPrice').text(baseResult+'원');
+					$('#goldPrice').val(baseResult);
+				});
+			});
+
+			var item = localStorage.getItem('myCat');
+			var priceForm = document.getElementById('goldPrice');
+
+			priceForm.value =item.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+		</script>
+	</body>
 </html>
