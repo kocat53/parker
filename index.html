@@ -236,22 +236,22 @@
 				});
 
 				$('button.submit').click(function(){
-					var myStorage = window.localStorage;
 					var Price = uncomma($('#price').val()),
 						goldPrice =  uncomma($('#goldPrice').val()),
 						gram =  $('#gram').val(),
 						result = Math.floor(Number(Price - (goldPrice*gram))),
 						printResult = String(result).replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
 
-						myStorage.setItem('myCat',goldPrice);
-
 						alert('세공비 : '+printResult+'원 입니다.');
 				});
 
 				$('.btn_calc').click(function(){
+					var myStorage = window.localStorage;
 					var basePrice = uncomma($('#goldCalc').val()),
 						clacPrice = Math.floor((basePrice*0.6435)/3.75)
 						baseResult = String(clacPrice).replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+
+						myStorage.setItem('myCat',clacPrice);
 
 					$('.calcPrice').text(baseResult+'원');
 					$('#goldPrice').val(baseResult);
